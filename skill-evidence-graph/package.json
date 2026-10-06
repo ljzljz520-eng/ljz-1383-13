@@ -1,0 +1,24 @@
+{
+  "name": "skill-evidence-graph",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "seed": "node scripts/seed.js",
+    "test": "node --test test/",
+    "test:concurrency": "node scripts/concurrency-check.js",
+    "ui:smoke": "node scripts/ui-smoke.js",
+    "check": "node --test test/ && node scripts/concurrency-check.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "个人展示站技能证据图：多父依赖图(DAG)、环检测、三类证据、规则版本化汇总、不可变历史导出",
+  "dependencies": {
+    "better-sqlite3": "^11.10.0",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "jsdom": "^29.1.1"
+  }
+}

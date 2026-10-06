@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>管理 · 技能证据图</title>
+<link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+<header class="topbar"><div>
+  <h1>管理 API 控制台</h1>
+  <p class="sub">所有写操作带环检测/去重并触发沿依赖图的重算；公开页永不暴露私密证据标题。</p>
+</div>
+<div class="controls">
+  <input id="key" placeholder="x-admin-key" style="width:150px" value="dev-admin-key">
+  <a class="link-btn" href="/">返回展示页</a>
+</div></header>
+
+<div class="admin-grid">
+  <section class="cardx">
+    <h2>节点</h2>
+    <input id="n-slug" placeholder="slug，如 js"><input id="n-title" placeholder="标题，如 JavaScript 基础"><textarea id="n-desc" placeholder="描述" rows="2"></textarea>
+    <button class="btn primary" onclick="createNode()">新建节点</button>
+    <hr>
+    <h2>节点合并</h2>
+    <div class="row2"><input id="m-source" placeholder="source 节点 id/slug"><input id="m-target" placeholder="target 节点 id/slug"></div>
+    <button class="btn" onclick="mergeNodes()">合并 source → target</button>
+  </section>
+
+  <section class="cardx">
+    <h2>前置关系（多父 DAG）</h2>
+    <div class="row2"><input id="e-from" placeholder="前置节点 id/slug"><input id="e-to" placeholder="依赖节点 id/slug"></div>
+    <label><select id="e-kind"><option value="hard">hard（门控+继承）</option><option value="weak">weak（仅缺口提示）</option></select></label>
+    <button class="btn primary" onclick="addEdge()">新增关系（环检测）</button>
+    <p class="kv">若形成依赖环，API 返回 422 cycle_detected。</p>
+  </section>
+
+  <section class="cardx">
+    <h2>证据 / 自评 / 计划</h2>
+    <select id="ev-kind">
+      <option value="verifiable">verifiable 可验证成果</option>
+      <option value="self">self 自评分</option>
+      <option value="plan">plan 计划目标（不计点）</option>
+    </select>
+    <input id="ev-title" placeholder="标题（私密内容不会出现在公开页）">
+    <div class="row2"><input id="ev-subtype" placeholder="子类 certificate/project/article/work/other"><input id="ev-issuer" placeholder="颁发方/来源"></div>
+    <div class="row2"><input id="ev-issued" type="date"><input id="ev-expires" type="date" title="到期日"></div>
+    <div class="row2"><input id="ev-nodes" placeholder="关联节点 id/slug，逗号分隔（支持一份证据多技能）"><label style="display:flex;align-items:center;gap:.4rem"><input type="checkbox" id="ev-private" style="width:auto">私密（仅属主）</label></div>
+    <div class="row2">
+      <select id="ev-selflevel" title="自评等级（self 用）"><option value="">自评等级</option><option value="1">基础</option><option value="2">可应用</option><option value="3">有充分验证</option></select>
+      <input id="ev-conf" type="number" step="0.1" min="0" max="1" placeholder="置信度0-1">
+    </div>
+    <button class="btn primary" onclick="createEvidence()">新增证据并关联</button>
+    <hr>
+    <h2>状态变更（证书到期/作品撤下）</h2>
+    <div class="row2"><input id="se-id" placeholder="证据 id"><select id="se-status"><option value="expired">expired 到期</option><option value="withdrawn">withdrawn 撤下</option><option value="active">active 恢复</option></select></div>
+    <button class="btn" onclick="setStatus()">变更状态并重算下游</button>
+  </section>
+
+  <section class="cardx">
+    <h2>规则版本与作业</h2>
+    <div id="rules"></div>
+    <div class="row2">
+      <button class="btn" onclick="activate('1.0.0',0)">激活 v1.0.0（立即作业）</button>
+      <button class="btn" onclick="activate('2.0.0',0)">激活 v2.0.0（立即作业）</button>
+    </div>
+    <div class="row2">
+      <button class="btn" onclick="activate('2.0.0',8000)">激活 v2（延迟8s，演示迟到）</button>
+      <button class="btn" onclick="processJobs()">处理到期作业</button>
+    </div>
+    <button class="btn" onclick="sweep(8000)">排队到期清扫（延迟8s）</button>
+    <hr>
+    <h2>历史图导出</h2>
+    <input id="x-title" placeholder="导出标题，如 2026Q3 评估">
+    <button class="btn primary" onclick="doExport()">导出不可变快照</button>
+    <p class="kv">导出后再撤下证据，快照仍保留当时依据。</p>
+  </section>
+
+  <section class="cardx" style="grid-column:1/-1">
+    <h2>当前数据 / 最近操作结果</h2>
+    <button class="btn" onclick="loadState()">刷新</button>
+    <pre id="out" class="out"></pre>
+  </section>
+</div>
+
+<script src="/js/admin.js"></script>
+</body></html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>技能证据图 · 个人展示</title>
+<link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+<header class="topbar">
+  <div>
+    <h1>技能证据图</h1>
+    <p class="sub">多前置依赖图（DAG）· 结论按规则版本计算 · 非客观认证，仅为自评成熟度</p>
+  </div>
+  <div class="controls">
+    <div class="seg" role="tablist" aria-label="汇总模式">
+      <button id="mode-rule" class="seg-btn active" role="tab" aria-selected="true">规则驱动汇总</button>
+      <button id="mode-evidence" class="seg-btn" role="tab" aria-selected="false">仅证据强度</button>
+    </div>
+    <select id="rule-select" title="规则版本"></select>
+    <a class="link-btn" href="/admin.html">管理</a>
+  </div>
+</header>
+<section class="rule-banner" id="rule-banner"></section>
+
+<main>
+  <div class="desktop-view" id="desktop-view">
+    <div class="graph-scroll">
+      <svg id="graph-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+    <aside class="detail-panel" id="detail-panel">
+      <div class="hint">点击任一节点查看可验证成果、自评分、计划目标与可定位的前置缺口路径。</div>
+    </aside>
+  </div>
+
+  <div class="mobile-view" id="mobile-view" hidden>
+    <div id="mobile-layers"></div>
+  </div>
+</main>
+
+<footer class="foot">
+  <details><summary>图例与口径</summary>
+    <ul class="legend">
+      <li><span class="dot lvl-none"></span>暂无依据 / <span class="dot lvl-foundational"></span>基础 / <span class="dot lvl-applied"></span>可应用 / <span class="dot lvl-proven"></span>有充分验证</li>
+      <li><span class="edge-demo hard"></span>硬前置（门控 + 证据继承） <span class="edge-demo weak"></span>弱前置（仅缺口提示）</li>
+      <li>同一证据对每个节点只计一次：多个前置共享同一证据不会重复加分。</li>
+      <li>自评分最多 +1 点且独立列示；计划目标不参与定级；私密证据不会出现在本页。</li>
+    </ul>
+  </details>
+  <div id="export-list" class="export-list"></div>
+</footer>
+
+<script src="/js/app.js"></script>
+</body>
+</html>
