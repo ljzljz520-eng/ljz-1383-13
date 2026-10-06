@@ -1,0 +1,21 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test test/",
+    "seed": "node -e \"require(\"./src/seed\")\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "技能证据图：多父依赖图、证据去重、环检测、规则版本化重算的个人展示站后端",
+  "dependencies": {
+    "express": "^5.2.1",
+    "sql.js": "^1.14.2"
+  }
+}

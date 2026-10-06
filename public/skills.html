@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>技能证据图 | 个人主页</title>
+<link rel="stylesheet" href="css/skills.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <a href="/site/index.html">← 返回主页</a>
+    <h1>技能证据图</h1>
+  </div>
+  <div class="top-actions">
+    <span id="ruleBadge" class="badge" title="当前计算规则版本"></span>
+    <button id="historyBtn" class="btn ghost">历史导出</button>
+    <a class="btn ghost" href="admin.html">管理</a>
+  </div>
+</header>
+
+<section class="policy-strip">
+  <p>三类信息分列：<b>主观自评分</b> · <b>可验证成果</b> · <b>计划目标</b>。
+  页面只显示按公开规则计算的「支持档位」，<b>不存在综合总分，也不构成任何客观认证</b>。
+  <a href="#" id="policyLink">查看规则与版本决策</a></p>
+</section>
+
+<main>
+  <!-- 桌面：图视图 -->
+  <section id="graphView" class="graph-view">
+    <div class="graph-hint">滚轮缩放 · 拖拽空白平移 · 点击节点查看证据与依赖路径</div>
+    <div id="canvas" class="canvas">
+      <svg id="edges" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L9,3 z" fill="#94a3b8"/>
+          </marker>
+          <marker id="arrow-weak" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L9,3 z" fill="#f59e0b"/>
+          </marker>
+        </defs>
+        <g id="edgeLayer"></g>
+      </svg>
+      <div id="nodeLayer" class="node-layer"></div>
+    </div>
+  </section>
+
+  <!-- 移动：折叠结构 -->
+  <section id="foldView" class="fold-view" hidden>
+    <p class="fold-hint">按能力层次折叠浏览，点击卡片展开前置、证据与计划。</p>
+    <div id="foldLayers"></div>
+  </section>
+</main>
+
+<!-- 节点详情抽屉 -->
+<aside id="drawer" class="drawer" hidden>
+  <div class="drawer-head">
+    <button id="drawerClose" class="btn ghost small">✕</button>
+    <h2 id="dTitle"></h2>
+    <span id="dLevel" class="level-chip"></span>
+  </div>
+  <div class="drawer-body">
+    <p id="dDesc" class="muted"></p>
+    <div id="dReevalNote" class="reeval-note"></div>
+
+    <div class="signal-grid">
+      <div class="signal-card self">
+        <h3>主观自评分</h3>
+        <div id="dSelf" class="signal-value">—</div>
+        <p class="hint">个人主观判断，1–5，非客观评价</p>
+      </div>
+      <div class="signal-card ev">
+        <h3>可验证成果</h3>
+        <div id="dEvCount" class="signal-value">0</div>
+        <p class="hint" id="dEvHint"></p>
+      </div>
+      <div class="signal-card plan">
+        <h3>计划目标</h3>
+        <div id="dPlanCount" class="signal-value">0</div>
+        <p class="hint">尚未完成的目标，不计为成果</p>
+      </div>
+    </div>
+
+    <div id="dWeaken" class="weaken-box" hidden></div>
+
+    <h3 class="sec-title">证据与依赖路径 <span class="hint" id="dStrength"></span></h3>
+    <ul id="dEvidence" class="ev-list"></ul>
+
+    <h3 class="sec-title">计划目标</h3>
+    <ul id="dPlans" class="plan-list"></ul>
+
+    <h3 class="sec-title">可定位的依赖路径（前置 → 本节点）</h3>
+    <ul id="dPaths" class="path-list"></ul>
+    <div class="drawer-foot">
+      <button id="reevalBtn" class="btn">实时重新评估</button>
+      <span id="reevalOut" class="hint"></span>
+    </div>
+  </div>
+</aside>
+
+<!-- 历史导出弹层 -->
+<div id="modalMask" class="modal-mask" hidden>
+  <div class="modal">
+    <div class="modal-head"><h3 id="modalTitle">历史导出</h3><button id="modalClose" class="btn ghost small">✕</button></div>
+    <div id="modalBody" class="modal-body"></div>
+  </div>
+</div>
+
+<script src="js/skills-graph.js"></script>
+</body>
+</html>
